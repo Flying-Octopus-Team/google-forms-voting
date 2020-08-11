@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+        .logo {
+            vertical-align: middle;
+        }
+
+        .width-100 {
+            width: 100%;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        #spreadsheet-link {
+            white-space: pre-wrap;
+            /* CSS3 */
+            white-space: -moz-pre-wrap;
+            /* Mozilla, since 1999 */
+            white-space: -pre-wrap;
+            /* Opera 4-6 */
+            white-space: -o-pre-wrap;
+            /* Opera 7 */
+            word-wrap: break-word;
+            /* Internet Explorer 5.5+ */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar branding-below">
+        <h2>Oblicz wyniki dla głosowania</h2>
+        <p>
+            Zostanie wygenerowany nowy arkusz z wynikami
+        </p>
+        <hr />
+        <form>
+            <div class="block form-group" id="creator-options">
+                <label for="spreadsheet-name">Nazwa nowego arkusza:</label>
+                <input type="text" class="width-100" id="spreadsheet-name">
+            </div>
+            <div class="block" id="button-bar">
+                <button class="action" id="calculate-form">Oblicz</button>
+            </div>
+        </form>
+        <hr id="ekh-break" />
+
+    </div>
+
+    <div class="sidebar bottom">
+        <img alt="Add-on logo" class="logo" width="50" src="https://i.imgur.com/lkk10Yf.png">
+        <span class="gray branding-text">Flying Octopus</span>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+    </script>
+    <script>
+        /**
+         * On document load, assign click handler
+         */
+        $(function () {
+            $('#calculate-form').click(insertText);
+        });
+
+        /**
+         * Runs a server-side function to validate and enter the entered text.
+         */
+        function insertText() {
+            this.disabled = true;
+            $('#error').remove();
+            $('#spreadsheet-link').remove();
+            google.script.run
+                .withSuccessHandler(function (msg, element) {
+                    showUrl(msg, $('#ekh-break'));
+                })
+                .withFailureHandler(
+                    function (msg, element) {
+                        showError(msg, $('#button-bar'));
+                        element.disabled = false;
+                    })
+                .withUserObject(this)
+                .calculateStarVote($('#spreadsheet-name').val());
+        }
+
+        /**
+         * Inserts a div that contains an error message after a given element.
+         *
+         * @param msg The error message to display.
+         * @param element The element after which to display the error.
+         */
+        function showError(msg, element) {
+            var div = $('<div id="error" class="error">' + msg + '</div>');
+            $(element).after(div);
+        }
+
+        function showUrl(msg, element) {
+            var div = $('<a class="width-100" id="spreadsheet-link" href="' + msg + '">' + msg + '</a>');
+            $(element).after(div);
+        }
+    </script>
+</body>
+
+</html>

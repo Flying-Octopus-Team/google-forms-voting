@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+        .logo {
+            vertical-align: middle;
+        }
+
+        .width-100 {
+            width: 100%;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar branding-below">
+        <h2>Generuj nowe głosowanie</h2>
+        <P>
+            Treść opcji należy wypełnić po wygenerowaniu
+        </P>
+        <hr />
+        <form id="genereateVoteForm"
+            onsubmit="event.preventDefault(); google.script.run.initializeMultiChoiceVote(this)">
+            <div class="block form-group" id="creator-options">
+                <label for="response-step">Liczba opcji:</label>
+                <input type="number" id="response-step" value="3" min="1" max="99999" , name="count">
+            </div>
+            <div class="block" id="button-bar">
+                <input type="submit" class="action" id="generate-vote" value="Generuj" />
+            </div>
+        </form>
+    </div>
+
+    <div class="sidebar bottom">
+        <img alt="Add-on logo" class="logo" width="50" src="https://i.imgur.com/lkk10Yf.png">
+        <span class="gray branding-text">Flying Octopus</span>
+    </div>
+</body>
+
+</html>
